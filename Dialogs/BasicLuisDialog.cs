@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using DataStore;
 using LuisBot.Helpers;
 using LuisBot.Helpers.Extension;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
+using Microsoft.Bot.Connector;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -41,7 +46,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         public async Task LoginIntent(IDialogContext context, LuisResult result)
         {
             var name = result.GetField(EMPLOYEE);
-            await context.PostAsync($"А, так би й зразу сказав, що ти: {name}").ConfigureAwait(false); //
+            await context.PostAsync($"А, так би й зразу сказав, що ти {name}").ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
@@ -55,13 +60,46 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("NextEvent")]
         public async Task NextEventIntent(IDialogContext context, LuisResult result)
         {
-            var message = @"
 
-              *  **16.11.2017** Юрко вам про мене розкаже!
-              *  **16.12.2017** гуляємо корпаратівку. Ото дід нажреться!
+            var events = new List<Event>()
+            {
+                new Event()
+                {
+                    Date = new DateTime(2017, 11, 16),
+                    Name = "Чатботи, чатботи",
+                    Message = "Думаю, що Юрко вам уже все показує",
+                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/bots.png",
+                },
+                new Event()
+                {
+                    Date = new DateTime(2017,12,16),
+                    Name = "Корпоратівка!",
+                    Message = "Ото дід нап'ється!",
+                    Url = "http://blackthorn-vision.com/case-studies/charting-library/",
+                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/corporativ.png",
+                },
+                new Event()
+                {
+                    Date = new DateTime(2017,12,18),
+                    Name = "Миколая",
+                    Message = "Ой хто-хто Миколая любить",
+                    Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
+                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/mykolaya.png",
+                },
+                new Event()
+                {
+                    Date = new DateTime(2017,12,31),
+                    Name = "Новий 2018!",
+                    Message = "Жовта земляна собака",
+                    Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
+                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/new-year.png",
+                },
+            };
 
-            ";
-            await context.PostAsync(message).ConfigureAwait(false); //
+            var cards = events.Select(wm => createEventCard(wm).ToAttachment()).ToList();
+
+            await context.PostCardsAsync(cards, "Clients");
             context.Wait(MessageReceived);
         }
 
@@ -77,6 +115,24 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             await context.PostAsync($"Та ще пахати і пахати. 112 годин радісної праці!").ConfigureAwait(false); //
             context.Wait(MessageReceived);
+        }
+
+        private static HeroCard createEventCard(Event ev)
+        {
+            var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
+            var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати {ev.Name}");
+            var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} це не для мене.");
+            var card = new HeroCard(ev.Name)
+            {
+                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
+                Buttons = new List<CardAction> { openWm, register, reject },
+                Text = new StringBuilder()
+                    .AppendLine($"{ev.Message} \n")
+                    .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
+                    .AppendLine($"*  Статус : **Не підтверджено** ")
+                    .ToString()
+            };
+            return card;
         }
 
 
