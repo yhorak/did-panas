@@ -45,7 +45,7 @@ namespace LuisBot.Helpers.Extension
 
         public static Task PostCardsAsync(this IDialogContext context, List<Attachment> attachments, string text = null, AttachmentLayout layout = AttachmentLayout.carousel)
         {
-            return context.PostAsync(context.CreateCardsResponse(attachments, text));
+            return context.PostAsync(context.CreateCardsResponse(attachments, text, layout));
         }
     }
 }

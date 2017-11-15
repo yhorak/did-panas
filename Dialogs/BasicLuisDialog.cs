@@ -29,7 +29,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Greetings")]
         public async Task HelloIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Здоров був малий, а ти чий будеш?").ConfigureAwait(false); //
+            await context.PostAsync(Strings.RandomGreeting).ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
@@ -69,7 +69,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Чатботи, чатботи",
                     Message = "Думаю, що Юрко вам уже все показує",
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/bots.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/bots.png",
                 },
                 new Event()
                 {
@@ -77,7 +77,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Корпоратівка!",
                     Message = "Ото дід нап'ється!",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
-                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/corporativ.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/corporativ.png",
                 },
                 new Event()
                 {
@@ -85,7 +85,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Миколая",
                     Message = "Ой хто-хто Миколая любить",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/mykolaya.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/mykolaya.png",
                 },
                 new Event()
                 {
@@ -93,13 +93,13 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Новий 2018!",
                     Message = "Жовта земляна собака",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "http://did-panas.azurewebsites.net/Assets/new-year.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/new-year.png",
                 },
             };
 
             var cards = events.Select(wm => createEventCard(wm).ToAttachment()).ToList();
 
-            await context.PostCardsAsync(cards, "Clients");
+            await context.PostCardsAsync(cards, "Події").ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 

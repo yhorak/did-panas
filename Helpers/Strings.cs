@@ -8,6 +8,22 @@ namespace LuisBot.Helpers
 {
     public class Strings
     {
+        public static List<string> Greetings
+        {
+            get
+            {
+                return new List<string>()
+                {
+                    "Здоров був малий, а ти чий будеш?",
+                    "Привіт, як настрій?",
+                    "Вечір в хату!",
+                    "Здоров був. І що далі?"
+                };
+            }
+        }
+
+        public static string RandomGreeting => Greetings[new Random().Next(0, Greetings.Count)];
+
         public static string Help {
             get
             {
