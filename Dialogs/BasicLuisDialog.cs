@@ -117,6 +117,21 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("ConfirmEvent")]
+        public async Task ConfirmEventIntent(IDialogContext context, LuisResult result)
+        {
+            await context.PostAsync($"ОК, записано! Чекаємо з хорошшим настроєм і чайочком").ConfigureAwait(false); //
+            context.Wait(MessageReceived);
+        }
+
+        [LuisIntent("RejectEvent")]
+        public async Task RejectEventIntent(IDialogContext context, LuisResult result)
+        {
+            await context.PostAsync($"Жаль, ну якщо передумаєш то кажи. Будемо тримати для тебе місце.").ConfigureAwait(false); //
+            context.Wait(MessageReceived);
+        }
+
+
         private static HeroCard createEventCard(Event ev)
         {
             var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
