@@ -103,7 +103,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
-        //[LuisIntent("WorkingHours")]
+        [LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
             await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); //
@@ -125,8 +125,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
-        //[LuisIntent("ShowProfile")]
-        [LuisIntent("WorkingHours")]
+        [LuisIntent("ShowProfile")]
         public async Task ShowProfile(IDialogContext context, LuisResult result)
         {
             var profiles = new List<Profile>()
@@ -134,9 +133,10 @@ namespace Microsoft.Bot.Sample.LuisBot
                 new Profile()
                 {
                     Name = "Юрко",
-                    Birthday = "18.03.1988",
-                    Holliday = 1,
-                    Sickly = "Хворів, 5 днів",
+                    Birthday = new DateTime(1988,03,18),
+                    Vacation = 4,
+                    SickLeave = "Хворів, 5 днів",
+                    Ensurance = 1234.55,
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
                 },
@@ -176,16 +176,16 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private static HeroCard createProfileCard(Profile it)
         {
-            var openProfile = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: it.Url);
+            var openProfile = new CardAction(CardActionType.OPEN_URL, "Відкрити в браузері", value: it.Url);
             var card = new HeroCard(it.Name)
             {
                 Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Відкрити в браузері", openProfile) },
                 Buttons = new List<CardAction> { openProfile },
                 Text = new StringBuilder()
-                    .AppendLine($"{it.Name} \n")
-                    .AppendLine($"*  День Народження : **{it.Birthday}** ")
-                    .AppendLine($"*  Відпустка : **{it.Holliday}** ")
-                    .AppendLine($"*  Лікарняний : **{it.Sickly}** ")
+                    .AppendLine($"*  День Народження : **{it.Birthday.ToShortDateString()}** ")
+                    .AppendLine($"*  Відпустка       : **{it.Vacation}** дні")
+                    .AppendLine($"*  Лікарняні       : **{it.SickLeave}** ")
+                    .AppendLine($"*  Страхівка       : **{it.Ensurance}** грн ")
                     .ToString()
             };
             return card;
