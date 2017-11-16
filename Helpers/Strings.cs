@@ -41,19 +41,16 @@ namespace LuisBot.Helpers
             }
         }
 
-        public static string String
+        public static string VoteResult
         {
             get
             {
                 var sb = new StringBuilder();
-                sb.AppendLine("# Hj,jxs \n");
-                sb.AppendLine("Пити вмію. Їсти вмію. Спати вмію. І трохи кусати:");
-                sb.AppendLine("Пиши:\n");
-                sb.AppendLine("*  **Коли в нас свято**, щоб дізнатися що тебечекає");
-                sb.AppendLine("*  питай про **робочі години** чи **скільки я вже відпахав** -- все скажу ");
-                sb.AppendLine("*  можу **пустити в хату** а можу і не пустити, якщо чужий ти.");
-                sb.AppendLine("# ПРО Панаса\n");
-                sb.AppendLine("  v0.1.0.0 \n");
+                sb.AppendLine("# Ваш голос зараховано! \n");
+                sb.AppendLine("## Поточний результат \n");
+                sb.AppendLine("*  **Кіт**     :  26%");
+                sb.AppendLine("*  **Собака**  :  22%");
+                sb.AppendLine("*  **Сова**    :  52");
 
                 return sb.ToString();
             }

@@ -152,7 +152,38 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("Vote")]
         public async Task Vote(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"").ConfigureAwait(false);
+            var events = new List<Event>()
+            {
+                new Event()
+                {
+                    Name = "Фото 1",
+                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/owl.jpg",
+                },
+                new Event()
+                {
+                    Name = "Фото 2!",
+                    Url = "http://blackthorn-vision.com/case-studies/charting-library/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                },
+                new Event()
+                {
+                    Name = "Фото 3",
+                    Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/dog.jpg",
+                },
+            };
+
+            var cards = events.Select(wm => createVoteCard(wm).ToAttachment()).ToList();
+
+            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
+            context.Wait(MessageReceived);
+        }
+        [LuisIntent("VoteResult")]
+        public async Task VoteResult(IDialogContext context, LuisResult result)
+        {
+
+            await context.PostAsync(Strings.VoteResult).ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
@@ -169,6 +200,20 @@ namespace Microsoft.Bot.Sample.LuisBot
                     .AppendLine($"{ev.Message} \n")
                     .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
                     .AppendLine($"*  Статус : **Не підтверджено** ")
+                    .ToString()
+            };
+            return card;
+        }
+
+        private static HeroCard createVoteCard(Event it)
+        {
+            var vote = new CardAction(CardActionType.IM_BACK, "Я голосую за ", value: $"{it.Name}");
+            var card = new HeroCard(it.Name, tap: new CardAction(CardActionType.IM_BACK, value: it.Url))
+            {
+                Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Кандидат {it.Name}") },
+                Buttons = new List<CardAction> { vote },
+                Text = new StringBuilder()
+                    .AppendLine($"{it.Name}")
                     .ToString()
             };
             return card;
