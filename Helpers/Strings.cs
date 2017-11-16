@@ -33,8 +33,9 @@ namespace LuisBot.Helpers
                 sb.AppendLine("Пиши:\n");
                 sb.AppendLine("*  **Коли в нас свято**, щоб дізнатися що тебечекає");
                 sb.AppendLine("*  питай про **робочі години** чи **скільки я вже відпахав** -- все скажу ");
+                sb.AppendLine("*  **інформація про бонуси та відпустку**, якщо це тебе цікавить ");
                 sb.AppendLine("*  можу **пустити в хату** а можу і не пустити, якщо чужий ти.");
-                sb.AppendLine("# ПРО Панаса\n");
+                sb.AppendLine("## ПРО Панаса\n");
                 sb.AppendLine("  v0.1.0.0 \n");
 
                 return sb.ToString();
