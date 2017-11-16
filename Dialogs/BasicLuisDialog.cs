@@ -106,7 +106,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); //
+            await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); 
             context.Wait(MessageReceived);
         }
 
