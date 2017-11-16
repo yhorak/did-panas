@@ -125,6 +125,36 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("ShowProfile")]
+        public async Task ShowProfile(IDialogContext context, LuisResult result)
+        {
+            var profiles = new List<Profile>()
+            {
+                new Profile()
+                {
+                    Name = "Юрко",
+                    Birthday = new DateTime(1988,03,18),
+                    Vacation = 4,
+                    SickLeave = "Хворів, 5 днів",
+                    Ensurance = 1234.55,
+                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
+                },
+                
+            };
+
+            var cards = profiles.Select(wm => createProfileCard(wm).ToAttachment()).ToList();
+
+            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
+            context.Wait(MessageReceived);
+        }
+
+        [LuisIntent("Vote")]
+        public async Task Vote(IDialogContext context, LuisResult result)
+        {
+            await context.PostAsync($"").ConfigureAwait(false);
+            context.Wait(MessageReceived);
+        }
 
         private static HeroCard createEventCard(Event ev)
         {
@@ -139,6 +169,23 @@ namespace Microsoft.Bot.Sample.LuisBot
                     .AppendLine($"{ev.Message} \n")
                     .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
                     .AppendLine($"*  Статус : **Не підтверджено** ")
+                    .ToString()
+            };
+            return card;
+        }
+
+        private static HeroCard createProfileCard(Profile it)
+        {
+            var openProfile = new CardAction(CardActionType.OPEN_URL, "Відкрити в браузері", value: it.Url);
+            var card = new HeroCard(it.Name)
+            {
+                Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Відкрити в браузері", openProfile) },
+                Buttons = new List<CardAction> { openProfile },
+                Text = new StringBuilder()
+                    .AppendLine($"*  День Народження : **{it.Birthday.ToShortDateString()}** ")
+                    .AppendLine($"*  Відпустка       : **{it.Vacation}** дні")
+                    .AppendLine($"*  Лікарняні       : **{it.SickLeave}** ")
+                    .AppendLine($"*  Страхівка       : **{it.Ensurance}** грн ")
                     .ToString()
             };
             return card;

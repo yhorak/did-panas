@@ -130,6 +130,7 @@
     <Content Include="Assets\hard_work.gif" />
     <Content Include="Assets\mykolaya.png" />
     <Content Include="Assets\new-year.png" />
+    <Content Include="Assets\sickly.jpg" />
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
