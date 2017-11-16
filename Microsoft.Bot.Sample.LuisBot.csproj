@@ -126,10 +126,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\bots.png" />
+    <Content Include="Assets\cat.jpg" />
     <Content Include="Assets\corporativ.png" />
+    <Content Include="Assets\dog.jpg" />
     <Content Include="Assets\hard_work.gif" />
     <Content Include="Assets\mykolaya.png" />
     <Content Include="Assets\new-year.png" />
+    <Content Include="Assets\owl.jpg" />
     <Content Include="Assets\sickly.jpg" />
     <Content Include="default.htm" />
     <Content Include="Global.asax" />

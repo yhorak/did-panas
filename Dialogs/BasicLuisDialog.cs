@@ -67,7 +67,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Чатботи, чатботи",
                     Message = "Думаю, що Юрко вам уже все показує",
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/bots.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
                 },
                 new Event()
                 {
@@ -75,7 +75,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Корпоратівка!",
                     Message = "Ото дід нап'ється!",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/corporativ.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
                 },
                 new Event()
                 {
@@ -83,7 +83,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Миколая",
                     Message = "Ой хто-хто Миколая любить",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/mykolaya.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
                 },
                 new Event()
                 {
@@ -91,7 +91,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Новий 2018!",
                     Message = "Жовта земляна собака",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/new-year.png",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
                 },
             };
 
@@ -192,18 +192,19 @@ namespace Microsoft.Bot.Sample.LuisBot
         #region Private Methods
         private static HeroCard createEventCard(Event ev)
         {
-            var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
+            //var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
             var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати Миколая {ev.Name}");
             var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} не для мене.");
             var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value: ev.Url))
             {
-                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
-                Buttons = new List<CardAction> { openWm, register, reject },
-                Text = new StringBuilder()
-                    .AppendLine($"{ev.Message} \n")
+                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}") },
+                Buttons = new List<CardAction> { /* openWm ,*/ register, reject },
+                Text = "",
+                /* new StringBuilder()
+                    .AppendLine($"## {ev.Message} \n")
                     .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
                     .AppendLine($"*  Статус : **Не підтверджено** ")
-                    .ToString()
+                    .ToString()*/
             };
             return card;
         }
