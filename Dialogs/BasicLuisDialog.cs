@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Чорт пойме, що ти мелеш. І *{result.Query}* і *{result.Query}*. Ото молодь пішла"); //
+            await context.PostAsync($"Р§РѕСЂС‚ РїРѕР№РјРµ, С‰Рѕ С‚Рё РјРµР»РµС€. Р† *{result.Query}* Ві *{result.Query}*. РћС‚Рѕ РјРѕР»РѕРґСЊ РїС–С€Р»Р°"); //
             context.Wait(MessageReceived);
         }
 
@@ -46,7 +46,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         public async Task LoginIntent(IDialogContext context, LuisResult result)
         {
             var name = result.GetField(EMPLOYEE);
-            await context.PostAsync($"А, так би й зразу сказав, що ти {name}").ConfigureAwait(false); //
+            await context.PostAsync($"Рђ, С‚Р°Рє Р±Рё Р№ Р·СЂР°Р·Сѓ СЃРєР°Р·Р°РІ, С‰Рѕ С‚Рё {name}").ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
@@ -66,32 +66,32 @@ namespace Microsoft.Bot.Sample.LuisBot
                 new Event()
                 {
                     Date = new DateTime(2017, 11, 16),
-                    Name = "Чатботи, чатботи",
-                    Message = "Думаю, що Юрко вам уже все показує",
+                    Name = "Р§Р°С‚Р±РѕС‚Рё, С‡Р°С‚Р±РѕС‚Рё",
+                    Message = "Р”СѓРјР°СЋ, С‰Рѕ Р®СЂРєРѕ РІР°Рј СѓР¶Рµ РІСЃРµ РїРѕРєР°Р·СѓС”",
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/bots.png",
                 },
                 new Event()
                 {
                     Date = new DateTime(2017,12,16),
-                    Name = "Корпоратівка!",
-                    Message = "Ото дід нап'ється!",
+                    Name = "РљРѕСЂРїРѕСЂР°С‚С–РІРєР°!",
+                    Message = "РћС‚Рѕ РґС–Рґ РЅР°Рї'С”С‚СЊСЃСЏ!",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/corporativ.png",
                 },
                 new Event()
                 {
                     Date = new DateTime(2017,12,18),
-                    Name = "Миколая",
-                    Message = "Ой хто-хто Миколая любить",
+                    Name = "РњРёРєРѕР»Р°СЏ",
+                    Message = "РћР№ С…С‚Рѕ-С…С‚Рѕ РњРёРєРѕР»Р°СЏ Р»СЋР±РёС‚СЊ",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/mykolaya.png",
                 },
                 new Event()
                 {
                     Date = new DateTime(2017,12,31),
-                    Name = "Новий 2018!",
-                    Message = "Жовта земляна собака",
+                    Name = "РќРѕРІРёР№ 2018!",
+                    Message = "Р–РѕРІС‚Р° Р·РµРјР»СЏРЅР° СЃРѕР±Р°РєР°",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/new-year.png",
                 },
@@ -99,53 +99,59 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             var cards = events.Select(wm => createEventCard(wm).ToAttachment()).ToList();
 
-            await context.PostCardsAsync(cards, "Події").ConfigureAwait(false);
+            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
-        [LuisIntent("WorkingHoursPass")]
+        [LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Та скільки то ти попрацював? Тю. Та хіба жто робота, хіба ногами бовтаєш.").ConfigureAwait(false); //
+            await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
-        [LuisIntent("WorkingHoursRemaining")]
-        public async Task WorkingHoursRemainingIntent(IDialogContext context, LuisResult result)
-        {
-            await context.PostAsync($"Та ще пахати і пахати. 112 годин радісної праці!").ConfigureAwait(false); //
-            context.Wait(MessageReceived);
-        }
 
         [LuisIntent("ConfirmEvent")]
         public async Task ConfirmEventIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"ОК, записано! Чекаємо з хорошшим настроєм і чайочком").ConfigureAwait(false); //
+            await context.PostAsync($"РћРљ, Р·Р°РїРёСЃР°РЅРѕ! Р§РµРєР°С”РјРѕ Р· С…РѕСЂРѕС€С€РёРј РЅР°СЃС‚СЂРѕС”Рј С– С‡Р°Р№РѕС‡РєРѕРј").ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
         [LuisIntent("RejectEvent")]
         public async Task RejectEventIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Жаль, ну якщо передумаєш то кажи. Будемо тримати для тебе місце.").ConfigureAwait(false); //
+            await context.PostAsync($"Р–Р°Р»СЊ, РЅСѓ СЏРєС‰Рѕ РїРµСЂРµРґСѓРјР°С”С€ С‚Рѕ РєР°Р¶Рё. Р‘СѓРґРµРјРѕ С‚СЂРёРјР°С‚Рё РґР»СЏ С‚РµР±Рµ РјС–СЃС†Рµ.").ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
 
 
         private static HeroCard createEventCard(Event ev)
         {
-            var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
-            var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати {ev.Name}");
-            var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} це не для мене.");
+            var openWm = new CardAction(CardActionType.OPEN_URL, "Р—Р°С†С–РЅРёС‚Рё", value: ev.Url);
+            var register = new CardAction(CardActionType.IM_BACK, "Р‘СѓРґСѓ", value: $"Р‘СѓРґСѓ СЂР°РґРёР№ РІС–РґРІС–РґР°С‚Рё РњРёРєРѕР»Р°СЏ {ev.Name}");
+            var reject = new CardAction(CardActionType.IM_BACK, "РќРµ Р±СѓРґСѓ", value: $"{ev.Name} РЅРµ РґР»СЏ РјРµРЅРµ.");
             var card = new HeroCard(ev.Name)
             {
-                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
+                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"РҐРѕС‡Сѓ Р·Р°С†С–РЅРёС‚Рё {ev.Name}", openWm) },
                 Buttons = new List<CardAction> { openWm, register, reject },
                 Text = new StringBuilder()
                     .AppendLine($"{ev.Message} \n")
-                    .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
-                    .AppendLine($"*  Статус : **Не підтверджено** ")
+                    .AppendLine($"*  Р”Р°С‚Р°  : **{ev.Date.ToShortDateString()}** ")
+                    .AppendLine($"*  РЎС‚Р°С‚СѓСЃ : **РќРµ РїС–РґС‚РІРµСЂРґР¶РµРЅРѕ** ")
                     .ToString()
+            };
+            return card;
+        }
+
+
+        private static AnimationCard createAnimationCard()
+        {
+            var openBrowser = new CardAction(CardActionType.OPEN_URL, "Р—Р°С†С–РЅРёС‚Рё", value: "");
+            var card = new AnimationCard("РћРіР»СЏРґ СЂРѕР±РѕС‡РёС… РіРѕРґРёРЅ", "", "" )
+            {
+                Image = new ThumbnailUrl("https://did-panas.azurewebsites.net/Assets/hard_work.gif"),
+                Buttons = new List<CardAction> { openBrowser }
             };
             return card;
         }
