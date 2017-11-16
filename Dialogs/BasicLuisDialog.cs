@@ -163,7 +163,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                 },
                 new Event()
                 {
-                    Name = "Фото 2!",
+                    Name = "Фото 2",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
                     CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
                 },
@@ -211,7 +211,7 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private static HeroCard createVoteCard(Event it)
         {
-            var vote = new CardAction(CardActionType.IM_BACK, "Я голосую за ", value: $"{it.Name}");
+            var vote = new CardAction(CardActionType.IM_BACK, "Голосувати", value: $"Я голосую за {it.Name}");
             var card = new HeroCard(it.Name, tap: new CardAction(CardActionType.IM_BACK, value: it.Url))
             {
                 Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Кандидат {it.Name}") },
