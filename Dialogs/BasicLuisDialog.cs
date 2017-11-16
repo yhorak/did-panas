@@ -40,8 +40,6 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
-        // Go to https://luis.ai and create a new intent, then train/publish your luis app.
-        // Finally replace "MyIntent" with the name of your newly created intent in the following handler
         [LuisIntent("Login")]
         public async Task LoginIntent(IDialogContext context, LuisResult result)
         {
@@ -117,7 +115,6 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
-
         [LuisIntent("ConfirmEvent")]
         public async Task ConfirmEventIntent(IDialogContext context, LuisResult result)
         {
@@ -133,7 +130,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
         [LuisIntent("ShowProfile")]
-        public async Task ShowProfile(IDialogContext context, LuisResult result)
+        public async Task ShowProfileIntent(IDialogContext context, LuisResult result)
         {
             var profile = new Profile()
             {
@@ -154,7 +151,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
         [LuisIntent("Vote")]
-        public async Task Vote(IDialogContext context, LuisResult result)
+        public async Task VoteIntent(IDialogContext context, LuisResult result)
         {
             var events = new List<Event>()
             {
@@ -183,20 +180,22 @@ namespace Microsoft.Bot.Sample.LuisBot
             await context.PostCardsAsync(cards, "").ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
+
         [LuisIntent("VoteResult")]
-        public async Task VoteResult(IDialogContext context, LuisResult result)
+        public async Task VoteResultIntent(IDialogContext context, LuisResult result)
         {
 
             await context.PostAsync(Strings.VoteResult).ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
+        #region Private Methods
         private static HeroCard createEventCard(Event ev)
         {
             var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
             var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати Миколая {ev.Name}");
             var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} не для мене.");
-            var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value:ev.Url))
+            var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value: ev.Url))
             {
                 Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
                 Buttons = new List<CardAction> { openWm, register, reject },
@@ -216,9 +215,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Кандидат {it.Name}") },
                 Buttons = new List<CardAction> { vote },
-                Text = new StringBuilder()
-                    .AppendLine($"{it.Name}")
-                    .ToString()
+                Text = ""
             };
             return card;
         }
@@ -240,10 +237,9 @@ namespace Microsoft.Bot.Sample.LuisBot
             return card;
         }
 
-
         private static AnimationCard createAnimationCard()
         {
-            var card = new AnimationCard("Огляд робочих годин", "Листопад 2017" )
+            var card = new AnimationCard("Огляд робочих годин", "Листопад 2017")
             {
                 Image = new ThumbnailUrl("https://did-panas.azurewebsites.net/Assets/sickly.jpg"),
                 Media = new List<MediaUrl>()
@@ -254,9 +250,8 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             };
             return card;
-        }
-
- 
+        } 
+        #endregion
 
     }
 }
