@@ -36,7 +36,7 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Чорт пойме, що ти мелеш. І *{result.Query}* ³ *{result.Query}*. Ото молодь пішла"); //
+            await context.PostAsync($"Чорт пойме, що ти мелеш. І *{result.Query}* і *{result.Query}*. Ото молодь пішла"); //
             context.Wait(MessageReceived);
         }
 
@@ -161,7 +161,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
             var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати Миколая {ev.Name}");
             var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} не для мене.");
-            var card = new HeroCard(ev.Name)
+            var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value:ev.Url))
             {
                 Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
                 Buttons = new List<CardAction> { openWm, register, reject },
@@ -194,16 +194,26 @@ namespace Microsoft.Bot.Sample.LuisBot
 
         private static AnimationCard createAnimationCard()
         {
-            var openBrowser = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: "");
-            var card = new AnimationCard("Огляд робочих годин", "", "" )
+            var card = new AnimationCard("Огляд робочих годин", "Листопад 2017" )
             {
-                Image = new ThumbnailUrl("https://did-panas.azurewebsites.net/Assets/hard_work.gif"),
-                Buttons = new List<CardAction> { openBrowser }
+                Image = new ThumbnailUrl(""),
+                Media = new List<MediaUrl>()
+                {
+                    new MediaUrl("https://did-panas.azurewebsites.net/Assets/hard_work.gif", "image/gif")
+                },
+                Text = new StringBuilder()
+                    .AppendLine($"* Всього       : *176* ")
+                    .AppendLine($"* На сьогодні  : *96* ")
+                    .AppendLine($"* Залишилось   : *80* ")
+                    .AppendLine($"* Рейт         : *середній* ")
+                    .AppendLine($"* Овертайми    : *за бажанням* ")
+                    .ToString()
+
             };
             return card;
         }
 
-
+ 
 
     }
 }
