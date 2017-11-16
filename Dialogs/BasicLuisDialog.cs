@@ -40,6 +40,8 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        // Go to https://luis.ai and create a new intent, then train/publish your luis app.
+        // Finally replace "MyIntent" with the name of your newly created intent in the following handler
         [LuisIntent("Login")]
         public async Task LoginIntent(IDialogContext context, LuisResult result)
         {
@@ -67,7 +69,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Чатботи, чатботи",
                     Message = "Думаю, що Юрко вам уже все показує",
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/bots.png",
                 },
                 new Event()
                 {
@@ -75,7 +77,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Корпоратівка!",
                     Message = "Ото дід нап'ється!",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/corporativ.png",
                 },
                 new Event()
                 {
@@ -83,7 +85,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Миколая",
                     Message = "Ой хто-хто Миколая любить",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/mykolaya.png",
                 },
                 new Event()
                 {
@@ -91,7 +93,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     Name = "Новий 2018!",
                     Message = "Жовта земляна собака",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/new-year.png",
                 },
             };
 
@@ -104,16 +106,10 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostCardAsync(createAnimationCard().ToAttachment(), "Роботка").ConfigureAwait(false);
-            await context.PostAsync(new StringBuilder()
-                .AppendLine($"* Всього       : *176* ")
-                .AppendLine($"* На сьогодні  : *96* ")
-                .AppendLine($"* Залишилось   : *80* ")
-                .AppendLine($"* Рейт         : *середній* ")
-                .AppendLine($"* Овертайми    : *за бажанням* ")
-                .ToString());
+            await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); //
             context.Wait(MessageReceived);
         }
+
 
         [LuisIntent("ConfirmEvent")]
         public async Task ConfirmEventIntent(IDialogContext context, LuisResult result)
@@ -130,28 +126,31 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
         [LuisIntent("ShowProfile")]
-        public async Task ShowProfileIntent(IDialogContext context, LuisResult result)
+        public async Task ShowProfile(IDialogContext context, LuisResult result)
         {
-            var profile = new Profile()
+            var profiles = new List<Profile>()
             {
-                Name = "Юрко",
-                Birthday = new DateTime(1988, 03, 18),
-                Vacation = 4,
-                SickLeave = "Хворів, 5 днів",
-                Ensurance = 1234.55,
-                Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
+                new Profile()
+                {
+                    Name = "Юрко",
+                    Birthday = new DateTime(1988,03,18),
+                    Vacation = 4,
+                    SickLeave = "Хворів, 5 днів",
+                    Ensurance = 1234.55,
+                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
+                },
+                
             };
 
+            var cards = profiles.Select(wm => createProfileCard(wm).ToAttachment()).ToList();
 
-            var card = createProfileCard(profile).ToAttachment();
-
-            await context.PostCardAsync(card, "").ConfigureAwait(false);
+            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
         [LuisIntent("Vote")]
-        public async Task VoteIntent(IDialogContext context, LuisResult result)
+        public async Task Vote(IDialogContext context, LuisResult result)
         {
             var events = new List<Event>()
             {
@@ -159,19 +158,19 @@ namespace Microsoft.Bot.Sample.LuisBot
                 {
                     Name = "Фото 1",
                     Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/owl.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/bots.png",
                 },
                 new Event()
                 {
-                    Name = "Фото 2",
+                    Name = "Фото 2!",
                     Url = "http://blackthorn-vision.com/case-studies/charting-library/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/cat.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/corporativ.png",
                 },
                 new Event()
                 {
                     Name = "Фото 3",
                     Url = "http://blackthorn-vision.com/case-studies/befit-and-caltrain/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/dog.jpg",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/mykolaya.png",
                 },
             };
 
@@ -182,41 +181,42 @@ namespace Microsoft.Bot.Sample.LuisBot
         }
 
         [LuisIntent("VoteResult")]
-        public async Task VoteResultIntent(IDialogContext context, LuisResult result)
+        public async Task VoteResult(IDialogContext context, LuisResult result)
         {
 
             await context.PostAsync(Strings.VoteResult).ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
-        #region Private Methods
         private static HeroCard createEventCard(Event ev)
         {
-            //var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
-            var register = new CardAction(CardActionType.IM_BACK, "Буду", value: $"Буду радий відвідати Миколая {ev.Name}");
-            var reject = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} не для мене.");
-            var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value: ev.Url))
+            var openWm = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: ev.Url);
+            // var okAct = new CardAction(CardActionType.IM_BACK, "Буду точно", value: $"{ev.Name}  ");
+            var reject = new CardAction(CardActionType.IM_BACK, "Запишіть", value: $" {ev.Name} ? Чекайте на мене");
+            var reject2 = new CardAction(CardActionType.IM_BACK, "Не буду", value: $"{ev.Name} не для мене.");
+            var card = new HeroCard(ev.Name, tap: new CardAction(CardActionType.IM_BACK, value:ev.Url))
             {
-                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}") },
-                Buttons = new List<CardAction> { /* openWm ,*/ register, reject },
-                Text = "",
-                /* new StringBuilder()
-                    .AppendLine($"## {ev.Message} \n")
+                Images = new List<CardImage> { new CardImage(ev.CardImageUrl, $"Хочу зацінити {ev.Name}", openWm) },
+                Buttons = new List<CardAction> { openWm , reject, reject2 },
+                Text = new StringBuilder()
+                    .AppendLine($"{ev.Message} \n")
                     .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
                     .AppendLine($"*  Статус : **Не підтверджено** ")
-                    .ToString()*/
+                    .ToString()
             };
             return card;
         }
 
         private static HeroCard createVoteCard(Event it)
         {
-            var vote = new CardAction(CardActionType.IM_BACK, "Голосувати", value: $"Я голосую за {it.Name}");
+            var vote = new CardAction(CardActionType.IM_BACK, "Я голосую за ", value: $"{it.Name}");
             var card = new HeroCard(it.Name, tap: new CardAction(CardActionType.IM_BACK, value: it.Url))
             {
                 Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Кандидат {it.Name}") },
                 Buttons = new List<CardAction> { vote },
-                Text = ""
+                Text = new StringBuilder()
+                    .AppendLine($"{it.Name}")
+                    .ToString()
             };
             return card;
         }
@@ -238,21 +238,29 @@ namespace Microsoft.Bot.Sample.LuisBot
             return card;
         }
 
+
         private static AnimationCard createAnimationCard()
         {
-            var card = new AnimationCard("Огляд робочих годин", "Листопад 2017")
+            var card = new AnimationCard("Огляд робочих годин", "Листопад 2017" )
             {
-                Image = new ThumbnailUrl("https://did-panas.azurewebsites.net/Assets/sickly.jpg"),
+                Image = new ThumbnailUrl(""),
                 Media = new List<MediaUrl>()
                 {
                     new MediaUrl("https://did-panas.azurewebsites.net/Assets/hard_work.gif", "image/gif")
                 },
-                Text = "",
+                Text = new StringBuilder()
+                    .AppendLine($"* Всього       : *176* ")
+                    .AppendLine($"* На сьогодні  : *96* ")
+                    .AppendLine($"* Залишилось   : *80* ")
+                    .AppendLine($"* Рейт         : *середній* ")
+                    .AppendLine($"* Овертайми    : *за бажанням* ")
+                    .ToString()
 
             };
             return card;
-        } 
-        #endregion
+        }
+
+ 
 
     }
 }
