@@ -14,4 +14,13 @@ namespace DataStore
         public string Url { get; set; }
         public string CardImageUrl { get; set; }
     }
+    public class Profile
+    {
+        public string Name { get; set; }
+        public string Birthday { get; set; }
+        public int Holliday { get; set; }
+        public string Sickly { get; set; }
+        public string Url { get; set; }
+        public string CardImageUrl { get; set; }
+    }
 }

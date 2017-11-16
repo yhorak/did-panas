@@ -103,7 +103,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
-        [LuisIntent("WorkingHours")]
+        //[LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
             await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); //
@@ -125,6 +125,36 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        //[LuisIntent("ShowProfile")]
+        [LuisIntent("WorkingHours")]
+        public async Task ShowProfile(IDialogContext context, LuisResult result)
+        {
+            var profiles = new List<Profile>()
+            {
+                new Profile()
+                {
+                    Name = "Юрко",
+                    Birthday = "18.03.1988",
+                    Holliday = 1,
+                    Sickly = "Хворів, 5 днів",
+                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
+                },
+                
+            };
+
+            var cards = profiles.Select(wm => createProfileCard(wm).ToAttachment()).ToList();
+
+            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
+            context.Wait(MessageReceived);
+        }
+
+        [LuisIntent("Vote")]
+        public async Task Vote(IDialogContext context, LuisResult result)
+        {
+            await context.PostAsync($"").ConfigureAwait(false);
+            context.Wait(MessageReceived);
+        }
 
         private static HeroCard createEventCard(Event ev)
         {
@@ -139,6 +169,23 @@ namespace Microsoft.Bot.Sample.LuisBot
                     .AppendLine($"{ev.Message} \n")
                     .AppendLine($"*  Дата  : **{ev.Date.ToShortDateString()}** ")
                     .AppendLine($"*  Статус : **Не підтверджено** ")
+                    .ToString()
+            };
+            return card;
+        }
+
+        private static HeroCard createProfileCard(Profile it)
+        {
+            var openProfile = new CardAction(CardActionType.OPEN_URL, "Зацінити", value: it.Url);
+            var card = new HeroCard(it.Name)
+            {
+                Images = new List<CardImage> { new CardImage(it.CardImageUrl, $"Відкрити в браузері", openProfile) },
+                Buttons = new List<CardAction> { openProfile },
+                Text = new StringBuilder()
+                    .AppendLine($"{it.Name} \n")
+                    .AppendLine($"*  День Народження : **{it.Birthday}** ")
+                    .AppendLine($"*  Відпустка : **{it.Holliday}** ")
+                    .AppendLine($"*  Лікарняний : **{it.Sickly}** ")
                     .ToString()
             };
             return card;
