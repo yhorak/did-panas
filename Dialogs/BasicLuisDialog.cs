@@ -106,7 +106,14 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("WorkingHours")]
         public async Task WorkingHoursPassIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostCardAsync(createAnimationCard().ToAttachment()).ConfigureAwait(false); 
+            await context.PostCardAsync(createAnimationCard().ToAttachment(), "Роботка").ConfigureAwait(false);
+            await context.PostAsync(new StringBuilder()
+                .AppendLine($"* Всього       : *176* ")
+                .AppendLine($"* На сьогодні  : *96* ")
+                .AppendLine($"* Залишилось   : *80* ")
+                .AppendLine($"* Рейт         : *середній* ")
+                .AppendLine($"* Овертайми    : *за бажанням* ")
+                .ToString());
             context.Wait(MessageReceived);
         }
 
@@ -128,24 +135,21 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("ShowProfile")]
         public async Task ShowProfile(IDialogContext context, LuisResult result)
         {
-            var profiles = new List<Profile>()
+            var profile = new Profile()
             {
-                new Profile()
-                {
-                    Name = "Юрко",
-                    Birthday = new DateTime(1988,03,18),
-                    Vacation = 4,
-                    SickLeave = "Хворів, 5 днів",
-                    Ensurance = 1234.55,
-                    Url = "http://blackthorn-vision.com/case-studies/web-management/",
-                    CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
-                },
-                
+                Name = "Юрко",
+                Birthday = new DateTime(1988, 03, 18),
+                Vacation = 4,
+                SickLeave = "Хворів, 5 днів",
+                Ensurance = 1234.55,
+                Url = "http://blackthorn-vision.com/case-studies/web-management/",
+                CardImageUrl = "https://did-panas.azurewebsites.net/Assets/sickly.jpg",
             };
 
-            var cards = profiles.Select(wm => createProfileCard(wm).ToAttachment()).ToList();
 
-            await context.PostCardsAsync(cards, "").ConfigureAwait(false);
+            var card = createProfileCard(profile).ToAttachment();
+
+            await context.PostCardAsync(card, "").ConfigureAwait(false);
             context.Wait(MessageReceived);
         }
 
@@ -196,18 +200,12 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             var card = new AnimationCard("Огляд робочих годин", "Листопад 2017" )
             {
-                Image = new ThumbnailUrl(""),
+                Image = new ThumbnailUrl("https://did-panas.azurewebsites.net/Assets/sickly.jpg"),
                 Media = new List<MediaUrl>()
                 {
                     new MediaUrl("https://did-panas.azurewebsites.net/Assets/hard_work.gif", "image/gif")
                 },
-                Text = new StringBuilder()
-                    .AppendLine($"* Всього       : *176* ")
-                    .AppendLine($"* На сьогодні  : *96* ")
-                    .AppendLine($"* Залишилось   : *80* ")
-                    .AppendLine($"* Рейт         : *середній* ")
-                    .AppendLine($"* Овертайми    : *за бажанням* ")
-                    .ToString()
+                Text = "",
 
             };
             return card;
